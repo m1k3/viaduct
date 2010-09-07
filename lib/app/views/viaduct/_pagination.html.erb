@@ -1,0 +1,15 @@
+<% if @total_pages > 1 %>
+    <%
+       all_pages = (1..@total_pages).to_a
+       first_pages = all_pages.first(5)
+       last_pages = all_pages.last(3)
+       around_pages = ((@page-3)..(@page+3)).to_a.select {|i| i > 0}
+       pages = (first_pages + around_pages + last_pages).uniq.reject {|i| i > @total_pages}
+    %>
+
+    <p>Page:
+      <% for page in pages -%>
+          <% if page == @page %><strong><%= page %></strong><% else %><%= link_to page, :q => @query, :page => page %><% end %><% unless page == @total_pages %>,<% end %>
+      <% end %>
+    </p>
+<% end %>

@@ -1,0 +1,15 @@
+<% unless @definition.search_fields.empty? %>
+    <% form_tag url_for(:action => "index"), :method => :get do -%>
+        <p><%= text_field_tag(:q, @query) %> <%= submit_tag "Search", {:name => nil} %></p>
+    <% end %>
+<% end %>
+<% if @models.empty? %>
+    <% if @query.blank? %>
+        <p>No <%= @definition.model_class.to_s.pluralize.downcase %> found. <%= link_to "Create new #{@definition.model_class.to_s.downcase}", :action => "new" %>.</p>
+    <% else %>
+        <p>No matching <%= @definition.model_class.to_s.pluralize.downcase %> found. <%= link_to "List all #{@definition.model_class.to_s.pluralize.downcase}", :action => "index" %>.</p>
+    <% end %>
+<% else %>
+    <%= render :partial => "viaduct/results_table" %>
+    <p><%= link_to "New #{@definition.model_class}", :action => "new" %></p>
+<% end %>

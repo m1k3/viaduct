@@ -1,0 +1,15 @@
+<% @definition.model_class.reflect_on_all_associations(:belongs_to).each_with_index do |association, index| %>
+	  <%= label_tag "belongs_to_#{association.class_name}", association.class_name %><br />
+	  <div id="searchbox">
+		<% belongs_to_value = @model.send(association.name.to_sym).send(@belongs_to_search_field.to_sym) if @model.send(association.name.to_sym) %>
+        <%= text_field_tag "belongs_to_#{association.class_name}", belongs_to_value %>
+      </div>
+	  <div id="autocomplete_<%=index%>" class="autocomplete"></div>
+	
+      <script type="text/javascript">
+          new Ajax.Autocompleter("belongs_to_<%=association.class_name%>", "autocomplete_<%=index%>", "<%= url_for :action => 'belongs_to_autocomplete' %>", {tokens: ",", paramName: "query", select: "select", minChars: 1, autoSelectFirst: false, parameters: "model=<%= association.class_name %>", afterUpdateElement : intellisense});
+		  function intellisense(searchbox, item) {
+		    searchbox.value = item.select('.select').first().innerHTML;
+		  }
+      </script>
+<% end %>

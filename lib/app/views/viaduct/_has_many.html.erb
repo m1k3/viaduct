@@ -1,0 +1,9 @@
+<% @definition.model_class.reflect_on_all_associations(:has_many).each do |association| %>
+	<p>
+	  <%= f.label association.name.to_sym %><br />
+	  <% association.klass.all.each_with_index do |association_item, index| %>
+	    <%= check_box_tag "#{association.name.to_s}_ids[]", association_item.id, @model.send(association.name.to_s).include?(association_item), {:id => "#{association.name}_#{index}"} %>
+	    <%= association_item.title if association_item.title %>
+	  <% end %>
+	</p>
+<% end %>

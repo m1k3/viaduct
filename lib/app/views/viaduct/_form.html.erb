@@ -1,0 +1,15 @@
+<% form_for @model do |f| %>
+  <%= f.error_messages %>
+
+  <% @definition.fields.each do |field| %>
+	<p>
+	  <%= f.label field.to_sym %><br />
+	  <%= f.text_field field.to_sym %>
+	</p>
+  <% end %>
+
+  <%= render :partial => 'viaduct/has_many', :locals => {:f => f} %>
+  <%= render :partial => 'viaduct/belongs_to', :locals => {:f => f} %>
+
+  <p><%= f.submit "Submit" %></p>
+<% end %>

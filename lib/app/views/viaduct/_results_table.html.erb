@@ -1,0 +1,29 @@
+<% form_tag url_for(:action => "bulk_action") do -%>
+    <table>
+      <thead>
+      <tr>
+        <% unless @definition.actions.empty? %><th></th><% end %>
+        <% for field in @definition.list_display %>
+            <th><%= h field %></th>
+        <% end %>
+      </tr>
+      </thead>
+      <tbody>
+      <% @models.each_with_index do |model, index| %>
+          <tr>
+            <% unless @definition.actions.empty? %>
+               <td id="<%= dom_id(model) %>"><%= check_box_tag("selected_models[]", model.id, false, {:id => "record_#{index}"}) %></td>
+            <% end %>
+            <% for field in @definition.list_display %>
+                <td><%= h model.send(field) %></td>
+            <% end %>
+            <td><%= link_to "Edit", :action => "edit", :id => model %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= render :partial => "viaduct/pagination" %>
+    <% unless @definition.actions.empty? -%>
+        <p>Action: <%= select("selected", "action", @definition.actions, {:include_blank => "----------"}) %> <%= submit_tag "Go" %></p>
+    <% end %>
+<% end %>
