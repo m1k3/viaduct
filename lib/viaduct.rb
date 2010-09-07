@@ -38,7 +38,7 @@ module Viaduct
     end
 
     def create
-      @model = model_class.new(params[model_class.class_name.downcase.to_sym])
+      @model = model_class.new(params[model_class.name.downcase.to_sym])
       if @model.valid? && @model.save && update_associations(@model)
         flash[:notice] = "#{model_class} was successfully created."
         redirect_to(:action => "index")
@@ -49,7 +49,7 @@ module Viaduct
 
     def update
       @model = model_class.find(params[:id])
-      if @model.valid? && @model.update_attributes(params[model_class.class_name.downcase.to_sym]) && update_associations(@model)
+      if @model.valid? && @model.update_attributes(params[model_class.name.downcase.to_sym]) && update_associations(@model)
         flash[:notice] = "#{model_class} was successfully updated."
         redirect_to(:action => "index")
       else
